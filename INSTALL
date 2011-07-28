@@ -1,0 +1,24 @@
+ In order to install the static library and its development files,
+ make sure you've built the package by running:
+
+ $ mkdir build && cd build
+ $ cmake .. -DCMAKE_INSTALL_PREFIX=/usr
+ $ make
+
+ then running
+
+ # make install
+
+ Cleaning build files:
+ 
+ $ make clean
+
+ Wiping the directory:
+
+ $ make distclean
+
+ To uninstall the files from your system, run:
+
+ # make uninstall
+
+

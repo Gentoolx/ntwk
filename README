@@ -1,0 +1,21 @@
+Wintermute Networking
+=====================
+
+  This directory (or source directory) contains the files that are
+  needed to build the networking features that the artificial intelligence
+  application, Wintermute, will need to operate.
+
+Installation
+=====================
+
+  See the INSTALL file for information about building and installing.
+
+
+More Information
+=====================
+
+  Visit <http://www.thesii.org/projects/wintermute> for more information
+  about the Wintermute project.
+
+  Also, building the documentation for this library will provide developement
+  information for those interested in extending this library.

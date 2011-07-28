@@ -1,0 +1,7 @@
+ ** Modify the Server & Client classes to work async, to avoid slowing things down.
+	(NOTE: May be done via lp:wintermute by IPC)
+
+ ** Implement a HTTP server and client system for the AngelNet (::Angel::Web::Client & ::Angel::Web::Server).
+	- Have it manage async requests to connect to an AngelNet via a web GUI.
+	- Allow it to modify the configuration of one's Angel system via the GUI.
+	- (propose ideas)
