@@ -1,37 +1,36 @@
+## @bug The generated SO file returns wntrntwk.so.SOVERSION
 project(WntrNtwk)
 cmake_minimum_required(VERSION 2.8)
 
-set(WNTRNTWK_MAJOR_VERSION "0")
-set(WNTRNTWK_MINOR_VERSION "01")
+set(WNTRNTWK_MAJOR_VERSION 0)
+set(WNTRNTWK_MINOR_VERSION 1)
 set(WNTRNTWK_VERSION
-    "${WNTRNTWK_MAJOR_VERSION}.${WNTRNTWK_MINOR_VERSION}")
+    ${WNTRNTWK_MAJOR_VERSION}.${WNTRNTWK_MINOR_VERSION})
 #
 # Custom modules
 #
 list(APPEND CMAKE_MODULE_PATH "cmake/Modules")
 
 #
-# Wintermute SDK stuff
-#
-include(WinterDefaults)
-include(WinterLibsDependencies)
-include(FindPythonLibs)
-include(FindQt4)
-include(FindBoost)
-#
 # Packages
 #
-find_package(Boost 1.40 COMPONENTS
+find_package(Boost 1.42 COMPONENTS
     date_time
     system
     thread
     python
     REQUIRED)
 
+find_package(PythonLibs 2.6 REQUIRED)
+
 find_package(Qt4 4.4.3 COMPONENTS
     QtCore
     QJSON
     REQUIRED)
+
+find_package(PkgConfig REQUIRED)
+pkg_search_module(Soprano REQUIRED soprano)
+include_directories(${Soprano_INCLUDE_DIRS})
 
 #
 # Qt-specific stuff
@@ -44,14 +43,14 @@ include("${QT_USE_FILE}")
 #
 set(VS_KEYWORD Qt4VSv1.0)
 set(VS_SCC_PROJECTNAME "Wintermute Network")
-set(WNTRNTWK_INCLUDE_DIR "${WINTER_INCLUDE_INSTALL_DIR}/wntr/ntwk" CACHE PATH "Includes dir.")
-set(WNTRNTWK_LIB_DIR "${WINTER_LIB_INSTALL_DIR}" CACHE PATH "Library dir.")
+set(WNTRNTWK_INCLUDE_DIR "${INCLUDE_INSTALL_DIR}/wntr/ntwk" CACHE PATH "Includes directory.")
+set(WNTRNTWK_LIB_DIR "${LIB_INSTALL_DIR}" CACHE PATH "Library install directory.")
 set(WNTRNTWK_INCLUDE_DIRS "${WNTRNTWK_INCLUDE_DIR}"
     ${Boost_INCLUDE_DIR}
     ${QJSON_INCLUDE_DIR}
     ${QT_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS})
-set(WNTRNTWK_CMAKE_DIR "${CMAKE_INSTALL_PREFIX}/share/cmake/WntrNtwk" CACHE PATH "CMake dir.")
+set(WNTRNTWK_CMAKE_DIR "${CMAKE_INSTALL_PREFIX}/share/cmake/WntrNtwk" CACHE PATH "CMake directory.")
 set(WNTRNTWK_LIBRARIES ${Boost_LIBRARIES} ${QT_LIBRARIES} ${QJSON_LIBRARIES} ${PYTHON_LIBRARIES})
 
 #
