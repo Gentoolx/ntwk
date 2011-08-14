@@ -1,4 +1,3 @@
-## @bug The generated SO file returns wntrntwk.so.SOVERSION
 project(WntrNtwk)
 cmake_minimum_required(VERSION 2.8)
 
@@ -14,15 +13,15 @@ list(APPEND CMAKE_MODULE_PATH "cmake/Modules")
 #
 # Packages
 #
+include(WinterDefaults)
+include(WinterLibsDependencies)
 find_package(Boost 1.42 COMPONENTS
     date_time
     system
     thread
     python
     REQUIRED)
-
 find_package(PythonLibs 2.6 REQUIRED)
-
 find_package(Qt4 4.4.3 COMPONENTS
     QtCore
     QJSON
@@ -82,6 +81,11 @@ target_link_libraries(wntrntwk
 #
 # Configs
 #
+configure_file("cmake/WntrNtwkConfig.cmake.in"
+    "${PROJECT_BINARY_DIR}/InstallFiles/WntrNtwkConfig.cmake" @ONLY)
+
+configure_file("cmake/WntrNtwkConfigVersion.cmake.in"
+    "${PROJECT_BINARY_DIR}/InstallFiles/WntrNtwkConfigVersion.cmake" @ONLY)
 
 configure_file("${PROJECT_SOURCE_DIR}/wntrntwk.pc.in"
    "${PROJECT_BINARY_DIR}/InstallFiles/wntrntwk.pc" @ONLY)

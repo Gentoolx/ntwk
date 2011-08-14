@@ -65,7 +65,7 @@ namespace Wintermute {
 
 		void Message::__init () {
 			ptime now ( microsec_clock::universal_time ( ) );
-			cout <<"(network) [Message] Generated message #" << Message::_c << "; created on " << to_iso_string(now) << "." << endl;
+			cout <<"(ntwk) [Message] Generated message #" << Message::_c << "; created on " << to_iso_string(now) << "." << endl;
 			this->setProperty ( string("_ts"), new QVariant(to_iso_extended_string(now).c_str()));
 			Message::_c++;
 		}

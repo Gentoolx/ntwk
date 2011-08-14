@@ -37,7 +37,7 @@ namespace Wintermute {
 
 		void Broadcast::destroy( )
 		{
-			cout << "(network) [Broadcast] Destroying... " << endl;
+			cout << "(ntwk) [Broadcast] Destroying... " << endl;
 			stop();
 			delete timer_;
 			delete io_service_;
@@ -46,7 +46,7 @@ namespace Wintermute {
 
 		void Broadcast::initialize( )
 		{
-			cout << "(network) [Broadcast] Initializing... " << endl;
+			cout << "(ntwk) [Broadcast] Initializing... " << endl;
 			start();
 		}
 
@@ -54,14 +54,14 @@ namespace Wintermute {
 			io_service_ = new io_service;
 			socket_ = new udp::socket(*Broadcast::io_service_);
 			openSocket();
-			cout << "(network) [Broadcast] Starting broadcasting activity... " << endl;
+			cout << "(ntwk) [Broadcast] Starting broadcasting activity... " << endl;
 			timer_ = new deadline_timer(*Broadcast::io_service_, *timeout_);
 			timer_->async_wait(Broadcast::timerElasped);
 			io_service_->run ();
 		}
 
 		void Broadcast::stop(){
-			cout << "(network) [Broadcast] Stopping broadcasting activity... " << endl;
+			cout << "(ntwk) [Broadcast] Stopping broadcasting activity... " << endl;
 			timer_->cancel ();
 			io_service_->stop ();
 			thread_->interrupt ();
@@ -71,7 +71,7 @@ namespace Wintermute {
 			/// @todo Send out one broadcast message and queue another to be sent.
 			BroadcastMessage aMsg;
 			const string theData(aMsg.toString ());
-			cout << "(network) [Broadcast] Attempting to send message '" << aMsg.toString () << "'" << endl;
+			cout << "(ntwk) [Broadcast] Attempting to send message '" << aMsg.toString () << "'" << endl;
 			socket_->async_send(buffer(theData), Broadcast::handleWrite);
 		}
 
@@ -80,7 +80,7 @@ namespace Wintermute {
 			delete inBuffer_;
 			inBuffer_ = new mutable_buffer;
 			boost::system::error_code e;
-			cout << "(network) [Broadcast] Attempting to read any messages.." << endl;
+			cout << "(ntwk) [Broadcast] Attempting to read any messages.." << endl;
 
 			if (socket_->available () > 0)
 				socket_->async_receive(buffer(*inBuffer_), Broadcast::handleRead);
@@ -102,20 +102,20 @@ namespace Wintermute {
 					thread_->join();
 				}
 			} else {
-				cout << "(network) [Broadcast] The timer encountered an error; " << e.message () << endl;
+				cout << "(ntwk) [Broadcast] The timer encountered an error; " << e.message () << endl;
 			}
 		}
 
 		void Broadcast::handleConnect(const boost::system::error_code& e){
 			if (!e){
-				cout << "(network) [Broadcast] Connected to endpoint (" << socket_->local_endpoint () << " | " << socket_->remote_endpoint () << ")"<< endl;
+				cout << "(ntwk) [Broadcast] Connected to endpoint (" << socket_->local_endpoint () << " | " << socket_->remote_endpoint () << ")"<< endl;
 				sendSignal ();
 				readSignal ();
-				cout << "(network) [Broadcast] Information queued to be read and sent." << endl;
+				cout << "(ntwk) [Broadcast] Information queued to be read and sent." << endl;
 				timer_->expires_from_now (*timeout_);
 				timer_->async_wait(Broadcast::timerElasped);
 			} else {
-				cout << "(network) [Broadcast] Couldn't connect to endpoint (" << *endpoint_ << "); " << e.message () << endl;
+				cout << "(ntwk) [Broadcast] Couldn't connect to endpoint (" << *endpoint_ << "); " << e.message () << endl;
 				openSocket();
 				socket_->async_connect(*endpoint_,Broadcast::handleConnect);
 			}
@@ -123,27 +123,27 @@ namespace Wintermute {
 
 		void Broadcast::handleWrite (const boost::system::error_code &e, size_t bytes){
 			if (!e) {
-				cout << "(network) [Broadcast] Wrote " << bytes << " bytes." << endl;
+				cout << "(ntwk) [Broadcast] Wrote " << bytes << " bytes." << endl;
 			} else {
-				cout << "(network) [Broadcast] Error writing to socket; " << e.message () << endl;
+				cout << "(ntwk) [Broadcast] Error writing to socket; " << e.message () << endl;
 			}
 		}
 
 		void Broadcast::handleRead (const boost::system::error_code &e, size_t bytes){
 			if (!e) {
 				if (bytes != 0){
-					cout << "(network) [Broadcast] Read " << bytes << " bytes." << endl;
+					cout << "(ntwk) [Broadcast] Read " << bytes << " bytes." << endl;
 				}
 				else {
-					cout << "(network) [Broadcast] No incoming data." << endl;
+					cout << "(ntwk) [Broadcast] No incoming data." << endl;
 				}
 
 				const char* inData = buffer_cast<const char*>(*inBuffer_);
 				if (inData != NULL){
-					cout << "(network) [Broadcast] Recieved: " << inData << endl;
+					cout << "(ntwk) [Broadcast] Recieved: " << inData << endl;
 				}
 			} else {
-				cout << "(network) [Broadcast] Error reading from socket; " << e.message () << endl;
+				cout << "(ntwk) [Broadcast] Error reading from socket; " << e.message () << endl;
 			}
 		}
 
