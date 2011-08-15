@@ -1,6 +1,7 @@
 project(WntrNtwk)
 cmake_minimum_required(VERSION 2.8)
 
+set(MOC_CODE )
 set(WNTRNTWK_MAJOR_VERSION 0)
 set(WNTRNTWK_MINOR_VERSION 1)
 set(WNTRNTWK_VERSION
@@ -63,6 +64,7 @@ include_directories(${WNTRNTWK_INCLUDE_DIRS}
 #
 file(GLOB WNTRNTWK_SHPP "include/wntr/ntwk/*.hpp")
 file(GLOB WNTRNTWK_SCPP "src/*.cpp")
+QT4_WRAP_CPP(MOC_CODE "${WNTRNTWK_SHPP}")
 
 #
 # Targets

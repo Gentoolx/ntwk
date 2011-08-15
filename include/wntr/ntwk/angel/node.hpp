@@ -32,46 +32,46 @@ namespace Wintermute {
              * @class Node node.hpp <wntr/ntwk/angel/node.hpp>
              */
             class Node {
-            public:
-                /**
-                 * @brief
-                 *
-                 * @class ID node.hpp <wntr/ntwk/angel/node.hpp>
-                 */
-                class ID {
                 public:
                     /**
                      * @brief
                      *
-                     * @fn ID
+                     * @class ID node.hpp <wntr/ntwk/angel/node.hpp>
                      */
-                    ID();
+                    class ID {
+                        public:
+                            /**
+                             * @brief
+                             *
+                             * @fn ID
+                             */
+                            ID();
+                            /**
+                             * @brief
+                             *
+                             * @fn ID
+                             * @param
+                             */
+                            ID ( const ID& );
+                            /**
+                             * @brief
+                             *
+                             * @fn ~ID
+                             */
+                            ~ID();
+                    };
                     /**
                      * @brief
                      *
-                     * @fn ID
-                     * @param
+                     * @fn Node
                      */
-                    ID(const ID&);
+                    Node();
                     /**
                      * @brief
                      *
-                     * @fn ~ID
+                     * @fn ~Node
                      */
-                    ~ID();
-                };
-                /**
-                 * @brief
-                 *
-                 * @fn Node
-                 */
-                Node();
-                /**
-                 * @brief
-                 *
-                 * @fn ~Node
-                 */
-                ~Node();
+                    ~Node();
             };
         }
     }
@@ -79,3 +79,4 @@ namespace Wintermute {
 
 #endif	/* NODE_HPP */
 
+// kate: indent-mode cstyle; space-indent on; indent-width 4; 

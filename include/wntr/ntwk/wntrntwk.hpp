@@ -28,27 +28,28 @@
 //#include "angel.hpp"
 
 namespace Wintermute {
-	namespace Network {
-		/**
-		 * @brief Initialize network system.
-		 * Starts up the main work of the network system, and creates what needs to be initialized.
-		 * @see Wintermute::Network::Broadcast::Initialize
-		 */
-		static void Initialize ( ) {
-			Broadcast::initialize ( );
-		}
+    namespace Network {
+        /**
+         * @brief Initialize network system.
+         * Starts up the main work of the network system, and creates what needs to be initialized.
+         * @see Wintermute::Network::Broadcast::Initialize
+         */
+        static void Initialize ( ) {
+            Broadcast::initialize ( );
+        }
 
-		/**
-		 * @brief
-		 *
-		 * @fn Deinitialize
-		 * @param void
-		 */
-		static void Deinitialize( void ){
-			Broadcast::destroy ();
-		}
-	}
+        /**
+         * @brief
+         *
+         * @fn Deinitialize
+         * @param void
+         */
+        static void Deinitialize ( void ) {
+            Broadcast::destroy ();
+        }
+    }
 }
 
 
 #endif /* WNTRNTWK_HPP */
+// kate: indent-mode cstyle; space-indent on; indent-width 4; 

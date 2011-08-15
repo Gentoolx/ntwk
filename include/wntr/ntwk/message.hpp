@@ -65,7 +65,7 @@ namespace Wintermute {
                  * @param int|version The verison of the archiving process.
                  * @see <boost/serialization.hpp>
                  */
-                void serialize(Archive& ar, unsigned int const version);
+                void serialize ( Archive& ar, unsigned int const version );
 
 
                 /**
@@ -88,7 +88,7 @@ namespace Wintermute {
                  * @fn Message
                  * @param  data The data representing this message.
                  */
-                Message(const string& );
+                Message ( const string& );
 
                 /**
                  * @brief Constructor, single attribute.
@@ -96,14 +96,14 @@ namespace Wintermute {
                  * @param  attrName The name of the attribute.
                  * @param QVariant|attrValue The value of the attribute.
                  */
-                Message(const string&, QVariant*);
+                Message ( const string&, QVariant* );
 
                 /**
                  * @brief Constructor, mutliple attributes.
                  * Creates a new message with multiple attributes.
                  * @param ValueMap|attrs The ValueMap to copy.
                  */
-                Message(const ValueMap& );
+                Message ( const ValueMap& );
 
                 /**
                  * @brief Checks property existence.
@@ -111,7 +111,7 @@ namespace Wintermute {
                  * @param  propertyName The property name to look for.
                  * @return TRUE if it exists, FALSE otherwise.
                  */
-                const bool hasProperty(const string& ) const;
+                const bool hasProperty ( const string& ) const;
 
                 /**
                  * @brief Obtains property.
@@ -119,7 +119,7 @@ namespace Wintermute {
                  * @param  propertyName The property name to look for.
                  * @return A pointer to a QVariant if it exists; NULL otherwise.
                  */
-                QVariant* getProperty(const string&);
+                QVariant* getProperty ( const string& );
 
                 /**
                  * @brief Obtains property as a constant.
@@ -127,7 +127,7 @@ namespace Wintermute {
                  * @param  propertyName The property name to look for.
                  * @return A pointer to a QVariant if it exists; NULL otherwise.
                  */
-                const QVariant* getProperty(const string&) const;
+                const QVariant* getProperty ( const string& ) const;
 
                 /**
                  * @brief Changes the value of a property.
@@ -135,7 +135,7 @@ namespace Wintermute {
                  * @param  propertyName The name of the property to set (or create).
                  * @param QVariant|propertyValue The value of the property to set (or create).
                  */
-                void setProperty(const string&, QVariant*);
+                void setProperty ( const string&, QVariant* );
 
                 /**
                  * @brief Gets message type.
@@ -198,15 +198,15 @@ namespace Wintermute {
              * @param Message&|A constant reference to the Message to search.
              * @param  A C-style string representing the property name.
              */
-            const bool Message_hasProperty( Message const&, const char* );
+            const bool Message_hasProperty ( Message const&, const char* );
 
             /**
              * @brief Obtains property value.
              * Returns the value stored away in the Message by the specified property name.
              * @param Message&|
-             * @param  
+             * @param
              */
-            const QVariant* Message_getProperty( Message const &, const char* );
+            const QVariant* Message_getProperty ( Message const &, const char* );
 
             /**
              * @brief
@@ -215,28 +215,28 @@ namespace Wintermute {
              * @param
              * @param
              */
-            void Message_setProperty( Message&, const char*, QVariant* );
+            void Message_setProperty ( Message&, const char*, QVariant* );
 
             /**
              * @brief
              *
              * @param
              */
-            const char* Message_getMessageType(Message const & );
+            const char* Message_getMessageType ( Message const & );
 
             /**
              * @brief
              *
              * @param
              */
-            const char* Message_toString(Message const &);
+            const char* Message_toString ( Message const & );
 
             /**
              * @brief
              *
              * @param
              */
-            const int Message_getCreationTime (Message const &);
+            const int Message_getCreationTime ( Message const & );
 
         }
 #endif
@@ -245,3 +245,4 @@ namespace Wintermute {
 
 #endif	/* MESSAGE_HPP */
 
+// kate: indent-mode cstyle; space-indent on; indent-width 4; 

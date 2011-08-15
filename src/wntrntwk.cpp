@@ -28,24 +28,25 @@ using namespace Wintermute::Network;
 
 namespace Wintermute {
     namespace Network {
-        BOOST_PYTHON_MODULE(wntrntwk){
-            class_<Message>("Message",init<const string, QVariant*>())
-                    .def("hasProperty",&Message::hasProperty)
-                    .def("setProperty",&Message::setProperty)
-                    /// @todo Fix this issue; since we've defined a non-const & const method; I think this won't expose properly. Consider just using the method to be exposed for C?
-                    //.def("getProperty",&Message::getProperty)
-                    .def("getMessageType",&Message::getMessageType)
-                    .def("getCreationTime",&Message::getCreationTime)
-                    .def("toString",&Message::toString);
+        BOOST_PYTHON_MODULE ( wntrntwk ) {
+            class_<Message> ( "Message",init<const string, QVariant*>() )
+            .def ( "hasProperty",&Message::hasProperty )
+            .def ( "setProperty",&Message::setProperty )
+            /// @todo Fix this issue; since we've defined a non-const & const method; I think this won't expose properly. Consider just using the method to be exposed for C?
+            //.def("getProperty",&Message::getProperty)
+            .def ( "getMessageType",&Message::getMessageType )
+            .def ( "getCreationTime",&Message::getCreationTime )
+            .def ( "toString",&Message::toString );
 
-            class_<BroadcastMessage, bases<Message> >("BroadcastMessage",init<const BroadcastType>())
-                    .def("getBroadcastType",&BroadcastMessage::getBroadcastType);
+            class_<BroadcastMessage, bases<Message> > ( "BroadcastMessage",init<const BroadcastType>() )
+            .def ( "getBroadcastType",&BroadcastMessage::getBroadcastType );
 
-            class_<Broadcast>("Broadcast",no_init)
-                    .def("initialize",&Broadcast::initialize)
-                    .def("isActive",&Broadcast::isActive)
-                    .def("destroy",&Broadcast::destroy);
+            class_<Broadcast> ( "Broadcast",no_init )
+            .def ( "initialize",&Broadcast::initialize )
+            .def ( "isActive",&Broadcast::isActive )
+            .def ( "destroy",&Broadcast::destroy );
         }
 
     }
 }
+// kate: indent-mode cstyle; space-indent on; indent-width 4; 
