@@ -71,7 +71,8 @@ QT4_WRAP_CPP(MOC_CODE "${WNTRNTWK_SHPP}")
 #
 add_library(wntrntwk SHARED
     ${WNTRNTWK_SHPP}
-    ${WNTRNTWK_SCPP})
+    ${WNTRNTWK_SCPP}
+    ${MOC_CODE})
 
 set_target_properties(wntrntwk PROPERTIES
     VERSION ${GENERIC_LIB_VERSION}
