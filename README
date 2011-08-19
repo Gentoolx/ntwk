@@ -1,21 +1,23 @@
-Wintermute Networking
-=====================
+Wintermute Networking Module (WntrNtwk)
+----------------------------
 
-  This directory (or source directory) contains the files that are
-  needed to build the networking features that the artificial intelligence
-  application, Wintermute, will need to operate.
+1. Introduction
 
-Installation
-=====================
+This library contains the networking ability of Wintermute. It allows it to
+connect to networks and also emit one of its one, called an Angelnet. The
+specification for the Angelnet, and thus WntrNtwk, is still under heavy
+revision. The code you see in this branch is subject to *drastically* change
+without notice.
 
-  See the INSTALL file for information about building and installing.
+2. About the Specification
 
+The specification to WntrNtwk can be found on the Synthetic Intellect
+Institute's Wiki at <http://www.thesii.org/wiki>.
 
-More Information
-=====================
+3. Reporting and Contributing to the Cause
 
-  Visit <http://www.thesii.org/projects/wintermute> for more information
-  about the Wintermute project.
-
-  Also, building the documentation for this library will provide developement
-  information for those interested in extending this library.
+We here at the Synthetic Intellect Institute, the makers and maintainers
+of Wintermute, welcome all. If you want to chat with the guys responsible
+for Wintermute or the Institute, drop us a message at <contact@thesii.org> or
+send us a message to our mailing list at <sii@lists.launchpad.net>. We hope to
+hear (or see or read) from you soon.

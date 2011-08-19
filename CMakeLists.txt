@@ -16,9 +16,10 @@ list(APPEND CMAKE_MODULE_PATH "cmake/Modules")
 #
 include(WinterDefaults)
 include(WinterLibsDependencies)
-find_package(Boost 1.42 COMPONENTS
+find_package(Boost 1.4 COMPONENTS
     date_time
     system
+    serialization
     thread
     python
     REQUIRED)
@@ -43,8 +44,8 @@ include("${QT_USE_FILE}")
 #
 set(VS_KEYWORD Qt4VSv1.0)
 set(VS_SCC_PROJECTNAME "Wintermute Network")
-set(WNTRNTWK_INCLUDE_DIR "${INCLUDE_INSTALL_DIR}/wntr/ntwk" CACHE PATH "Includes directory.")
-set(WNTRNTWK_LIB_DIR "${LIB_INSTALL_DIR}" CACHE PATH "Library install directory.")
+set(WNTRNTWK_INCLUDE_DIR "${WINTER_INCLUDE_INSTALL_DIR}/wntr/ntwk" CACHE PATH "Includes directory.")
+set(WNTRNTWK_LIB_DIR "${WINTER_LIB_INSTALL_DIR}" CACHE PATH "Library install directory.")
 set(WNTRNTWK_INCLUDE_DIRS "${WNTRNTWK_INCLUDE_DIR}"
     ${Boost_INCLUDE_DIR}
     ${QJSON_INCLUDE_DIR}
