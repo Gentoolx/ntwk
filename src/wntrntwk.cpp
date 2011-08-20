@@ -30,12 +30,9 @@ namespace Wintermute {
     namespace Network {
         BOOST_PYTHON_MODULE ( wntrntwk ) {
             class_<Message> ( "Message",init<const string, QVariant*>() )
-            .def ( "hasProperty",&Message::hasProperty )
             .def ( "setProperty",&Message::setProperty )
-            /// @todo Fix this issue; since we've defined a non-const & const method; I think this won't expose properly. Consider just using the method to be exposed for C?
-            //.def("getProperty",&Message::getProperty)
+            .def("getProperty",&Message::property)
             .def ( "getMessageType",&Message::getMessageType )
-            .def ( "getCreationTime",&Message::getCreationTime )
             .def ( "toString",&Message::toString );
 
             class_<BroadcastMessage, bases<Message> > ( "BroadcastMessage",init<const BroadcastType>() )
@@ -44,9 +41,9 @@ namespace Wintermute {
             class_<Broadcast> ( "Broadcast",no_init )
             .def ( "initialize",&Broadcast::initialize )
             .def ( "isActive",&Broadcast::isActive )
-            .def ( "destroy",&Broadcast::destroy );
+            .def ( "deinitialize",&Broadcast::deinitialize );
         }
 
     }
 }
-// kate: indent-mode cstyle; space-indent on; indent-width 4; 
+// kate: indent-mode cstyle; space-indent on; indent-width 4;

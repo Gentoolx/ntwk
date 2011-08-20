@@ -20,144 +20,63 @@
  */
 
 #include "message.hpp"
-#include <boost/archive/xml_oarchive.hpp>
-#include <boost/serialization/nvp.hpp>
-#include <sstream>
+#include <QtDebug>
+#include <QDateTime>
 
 using namespace std;
-using namespace boost::posix_time;
 using namespace Wintermute::Network;
 
 using std::string;
 using std::map;
-using std::istringstream;
-using boost::posix_time::ptime;
 using Wintermute::Network::Message;
 
 namespace Wintermute {
     namespace Network {
-        int Message::_c = 0;
+        int Message::s_count = 0;
 
         Message::Message () {
             __init ( );
         }
 
-        Message::Message ( const string& serializingText ) {
-            istringstream inData ( serializingText );
-            {
-                /// @todo Define Boost de-serialization information here.
-            }
-        }
-
-        Message::Message ( const ValueMap &collection ) {
-            this->data = collection;
+        /// @todo Find a means of copying all of the custom properties set from &msg to this.
+        Message::Message ( const Message &msg ) {
             __init();
         }
 
         Message::Message ( const string& property, QVariant* value ) {
             __init ( );
-            data.insert ( ValueMap::value_type ( new string ( property.c_str () ), value ) );
         }
 
         Message::~Message () {
-            data.clear ( );
         }
 
         void Message::__init () {
-            ptime now ( microsec_clock::universal_time ( ) );
-            cout <<"(ntwk) [Message] Generated message #" << Message::_c << "; created on " << to_iso_string ( now ) << "." << endl;
-            this->setProperty ( string ( "_ts" ), new QVariant ( to_iso_extended_string ( now ).c_str() ) );
-            Message::_c++;
+            QDateTime now = QDateTime::currentDateTimeUtc ();
+            qDebug() << "(ntwk) [Message] Generated message #" << Message::s_count << "; created on" << now << ".";
+            this->setProperty ( "TimeStamp" , now );
+            Message::s_count++;
         }
 
-        const ptime Message::getCreationTime () const {
-            if ( this->hasProperty ( "_ts" ) ) {
-                QString ts = this->getProperty ( "_ts" )->toString ();
-                cout <<ts.toStdString () << endl;
-                return from_iso_string ( ts.toStdString().c_str () );
-            } else {
-                cout <<"NULL message." << endl;
-                ptime now;
-                return now;
-            }
-        }
-
-        QVariant* Message::getProperty ( const string& property ) {
-            if ( !hasProperty ( property ) )
-                return NULL;
-
-            return this->data.find ( new string ( property.c_str () ) )->second;
-        }
-
-        const QVariant* Message::getProperty ( const string& property ) const {
-            if ( !hasProperty ( property ) )
-                return NULL;
-
-            return this->data.find ( new string ( property.c_str () ) )->second;
-        }
-
-        template<class Archive>
-        void Message::serialize ( Archive& ar, const unsigned int version ) {
-            ar & BOOST_SERIALIZATION_NVP ( data );
-        }
-
-        const bool Message::hasProperty ( const string& propertyName ) const {
-
-            return ! ( this->data.find ( new string ( propertyName.c_str () ) ) == this->data.end ( ) );
-        }
-
-        void Message::setProperty ( const string& propertyName, QVariant* propertyValue ) {
-
-            this->data.insert ( ValueMap::value_type ( new string ( propertyName.c_str () ), propertyValue ) );
+        const QDateTime Message::getCreationTime () const {
+            QVariant l_vrt = this->property ( "TimeStamp" ).toDateTime();
+            if (l_vrt.isValid ()) return l_vrt.toDateTime ();
+            else NULL;
         }
 
         const string Message::getMessageType () const {
-            const QVariant* a = this->getProperty ( "typ" );
-            if ( a == NULL )
-                return "unknwn";
-            else
-                return a->toString ( ).toStdString ();
+            QVariant l_vrt = this->property ( "MessageType" ).toDateTime();
+            if (l_vrt.isValid ()) return l_vrt.toString ().toStdString ();
+            else return "";
         }
 
         const string Message::toString () const {
-            ostringstream outData;
 
-            {
-                boost::archive::xml_oarchive outXml ( outData );
-                //outXml << boost::serialization::make_nvp<Message>("Message",*this);
-            }
-
-            return outData.str ();
         }
 
-        Message* Message_create () {
-            return new Message;
-        }
+        /// @todo Implement the deconstruction method from JSON to a Message here.
+        Message* Message::fromString ( const string& serializingText ) {
 
-        Message* Message_createFromString ( const char *data ) {
-            const string theData ( data );
-            return new Message ( theData );
-        }
-
-        Message* Message_createProperty ( const char *name, QVariant *property ) {
-            return new Message ( ( string ( name ) ),property );
-        }
-
-        const bool Message_hasProperty ( const Message &msg, const char *propertyName ) {
-            return msg.hasProperty ( propertyName );
-        }
-
-        const QVariant* Message_getProperty ( const Message &msg, const char *propertyName ) {
-            return msg.getProperty ( ( string ( propertyName ) ) );
-        }
-
-        const char* Message_getMessageType ( const Message &msg ) {
-            return ( msg.getMessageType () ).c_str ();
-        }
-
-        const char* Message_toString ( const Message &msg ) {
-            return ( msg.toString () ).c_str ();
         }
     }
 }
-// kate: indent-mode cstyle; space-indent on; indent-width 4; 
+// kate: indent-mode cstyle; space-indent on; indent-width 4;
