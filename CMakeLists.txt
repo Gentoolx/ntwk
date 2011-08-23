@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 
 set(MOC_CODE )
 set(WNTRNTWK_MAJOR_VERSION 0)
-set(WNTRNTWK_MINOR_VERSION 1)
+set(WNTRNTWK_MINOR_VERSION 01)
 set(WNTRNTWK_VERSION
     ${WNTRNTWK_MAJOR_VERSION}.${WNTRNTWK_MINOR_VERSION})
 #
@@ -17,21 +17,14 @@ list(APPEND CMAKE_MODULE_PATH "cmake/Modules")
 include(WinterDefaults)
 include(WinterLibsDependencies)
 find_package(Boost 1.4 COMPONENTS
-    date_time
-    system
-    serialization
-    thread
     python
     REQUIRED)
 find_package(PythonLibs 2.6 REQUIRED)
 find_package(Qt4 4.4.3 COMPONENTS
     QtCore
+    QtNetwork
     QJSON
     REQUIRED)
-
-find_package(PkgConfig REQUIRED)
-pkg_search_module(Soprano REQUIRED soprano)
-include_directories(${Soprano_INCLUDE_DIRS})
 
 #
 # Qt-specific stuff
@@ -63,8 +56,9 @@ include_directories(${WNTRNTWK_INCLUDE_DIRS}
 #
 # Files
 #
-file(GLOB WNTRNTWK_SHPP "include/wntr/ntwk/*.hpp")
+file(GLOB_RECURSE WNTRNTWK_SHPP "include/wntr/ntwk/*")
 file(GLOB WNTRNTWK_SCPP "src/*.cpp")
+file(GLOB CMAKE_MODULES "${PROJECT_SOURCE_DIR}/cmake/Modules/*.cmake")
 QT4_WRAP_CPP(MOC_CODE "${WNTRNTWK_SHPP}")
 
 #

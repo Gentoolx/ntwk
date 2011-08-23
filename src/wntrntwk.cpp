@@ -38,7 +38,7 @@ namespace Wintermute {
             class_<BroadcastMessage, bases<Message> > ( "BroadcastMessage",init<const BroadcastType>() )
             .def ( "getBroadcastType",&BroadcastMessage::getBroadcastType );
 
-            class_<Broadcast> ( "Broadcast",no_init )
+            class_<Broadcast, boost::noncopyable > ( "Broadcast" ,no_init )
             .def ( "initialize",&Broadcast::initialize )
             .def ( "isActive",&Broadcast::isActive )
             .def ( "deinitialize",&Broadcast::deinitialize );

@@ -24,22 +24,14 @@
 #ifndef ANGEL_HPP
 #define	ANGEL_HPP
 
-#include "angel/node.hpp"
-
 namespace Wintermute {
     namespace Network {
-        /**
-         * @brief typedef for nodes in the Angel network.
-         * A shorthand notation referring to nodes in the AngelNet as AngelNodes.
-         */
-        typedef Wintermute::Network::Angel::Node AngelNode;
-        /**
-         * @brief typdef of ids of AngelNodes.
-         */
-        typedef AngelNode::ID AngelID;
+        namespace Angel {
+
+        }
     }
 }
 
 #endif	/* ANGEL_HPP */
 
-// kate: indent-mode cstyle; space-indent on; indent-width 4; 
+// kate: indent-mode cstyle; space-indent on; indent-width 4;

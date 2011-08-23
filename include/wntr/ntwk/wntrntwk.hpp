@@ -25,7 +25,7 @@
 
 #include "message.hpp"
 #include "broadcast.hpp"
-//#include "angel.hpp"
+#include "angel.hpp"
 
 namespace Wintermute {
     namespace Network {
@@ -45,11 +45,11 @@ namespace Wintermute {
          * @param void
          */
         static void Deinitialize ( void ) {
-            Broadcast::destroy ();
+            Broadcast::deinitialize ();
         }
     }
 }
 
 
 #endif /* WNTRNTWK_HPP */
-// kate: indent-mode cstyle; space-indent on; indent-width 4; 
+// kate: indent-mode cstyle; space-indent on; indent-width 4;

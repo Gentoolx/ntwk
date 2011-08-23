@@ -26,18 +26,11 @@
 #include <string>
 #include <algorithm>
 #include <QVariant>
-#include <boost/serialization/serialization.hpp>
-#include <boost/serialization/nvp.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
 
 using namespace std;
-using namespace boost::posix_time;
-using namespace boost::serialization;
 
-using std::string;
 using std::map;
-using boost::serialization::access;
-using boost::posix_time::ptime;
+using std::string;
 
 namespace Wintermute {
     namespace Network {
@@ -47,26 +40,11 @@ namespace Wintermute {
          * @brief Foundational message class.
          * This class represents the underlying mechanics of network interactivites for Wintermute.
          */
-        class Message {
-            private:
-                friend class boost::serialization::access;
-                /**
-                 * @brief typedef for ValueMap.
-                 * Holds the mapping attributes of Wintermute.
-                 */
-                typedef map<const string* ,QVariant*> ValueMap;
-                ValueMap data;
-                static int _c;
-                template<class Archive>
-                /**
-                 * @brief Serializes the message.
-                 * Serializes the message into a compatiable format provided by the Archive.
-                 * @param Archive|ar The archiving object.
-                 * @param int|version The verison of the archiving process.
-                 * @see <boost/serialization.hpp>
-                 */
-                void serialize ( Archive& ar, unsigned int const version );
+        class Message : public QObject {
+            Q_OBJECT
 
+            private:
+                static int s_count;
 
                 /**
                  * @brief Initializes the message.
@@ -83,14 +61,6 @@ namespace Wintermute {
                 Message();
 
                 /**
-                 * @brief Deserializing method.
-                 * Creates a Message by deserializing the text passed from Boost.
-                 * @fn Message
-                 * @param  data The data representing this message.
-                 */
-                Message ( const string& );
-
-                /**
                  * @brief Constructor, single attribute.
                  * Creates a new message with one attribute.
                  * @param  attrName The name of the attribute.
@@ -103,39 +73,7 @@ namespace Wintermute {
                  * Creates a new message with multiple attributes.
                  * @param ValueMap|attrs The ValueMap to copy.
                  */
-                Message ( const ValueMap& );
-
-                /**
-                 * @brief Checks property existence.
-                 * Determines if a property exists, and return a Boolean whether or not it does.
-                 * @param  propertyName The property name to look for.
-                 * @return TRUE if it exists, FALSE otherwise.
-                 */
-                const bool hasProperty ( const string& ) const;
-
-                /**
-                 * @brief Obtains property.
-                 * Gets the value of the property as a variant.
-                 * @param  propertyName The property name to look for.
-                 * @return A pointer to a QVariant if it exists; NULL otherwise.
-                 */
-                QVariant* getProperty ( const string& );
-
-                /**
-                 * @brief Obtains property as a constant.
-                 * Gets the value of the property as a variant, with read-only privileges.
-                 * @param  propertyName The property name to look for.
-                 * @return A pointer to a QVariant if it exists; NULL otherwise.
-                 */
-                const QVariant* getProperty ( const string& ) const;
-
-                /**
-                 * @brief Changes the value of a property.
-                 * Sets the value of an existing property; creates it if it doesn't exists.
-                 * @param  propertyName The name of the property to set (or create).
-                 * @param QVariant|propertyValue The value of the property to set (or create).
-                 */
-                void setProperty ( const string&, QVariant* );
+                Message ( const Message& );
 
                 /**
                  * @brief Gets message type.
@@ -158,91 +96,24 @@ namespace Wintermute {
                  * @note This method merely serves as a convinence method; you can get the value by calling getProperty('_ts').
                  * @return The time of creation.
                  */
-                const ptime getCreationTime() const;
+                const QDateTime getCreationTime() const;
                 /**
                  * @brief Destructor.
                  * Destroys this message.
                  */
                 ~Message();
+
+                /**
+                 * @brief Deserializing method.
+                 * Creates a Message by deserializing the text passed from Boost.
+                 * @fn Message
+                 * @param  data The data representing this message.
+                 */
+                static Message* fromString ( const string& );
         };
-
-#ifdef __cplusplus
-        extern "C" {
-
-            /**
-             * @brief Creates a Message.
-             * Creates a new empty Message. Can be used to represent a NULL Message.
-             * @return A Message.
-             */
-            Message* Message_create ();
-
-            /**
-             * @brief Deserializes a Message.
-             * Generates a new message from serialized text.
-             * @fn Message_createFromString
-             * @param  The C-style string representing the serialized text.
-             */
-            Message* Message_createFromString ( const char* );
-
-            /**
-             * @brief Creates a single-property message.
-             * Creates a new message with only one property.
-             * @param  The C-style string representing the property name.
-             * @param QVariant*|A pointer to the value to save.
-             */
-            Message* Message_createOneProperty ( const char*, QVariant* );
-
-            /**
-             * @brief Determines existence of property.
-             * Finds out if a specified property is part of this Message's property list.
-             * @param Message&|A constant reference to the Message to search.
-             * @param  A C-style string representing the property name.
-             */
-            const bool Message_hasProperty ( Message const&, const char* );
-
-            /**
-             * @brief Obtains property value.
-             * Returns the value stored away in the Message by the specified property name.
-             * @param Message&|
-             * @param
-             */
-            const QVariant* Message_getProperty ( Message const &, const char* );
-
-            /**
-             * @brief
-             *
-             * @param
-             * @param
-             * @param
-             */
-            void Message_setProperty ( Message&, const char*, QVariant* );
-
-            /**
-             * @brief
-             *
-             * @param
-             */
-            const char* Message_getMessageType ( Message const & );
-
-            /**
-             * @brief
-             *
-             * @param
-             */
-            const char* Message_toString ( Message const & );
-
-            /**
-             * @brief
-             *
-             * @param
-             */
-            const int Message_getCreationTime ( Message const & );
-
-        }
-#endif
     }
 }
 
 #endif	/* MESSAGE_HPP */
 
-// kate: indent-mode cstyle; space-indent on; indent-width 4; 
+// kate: indent-mode cstyle; space-indent on; indent-width 4;

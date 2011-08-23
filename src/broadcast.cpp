@@ -25,6 +25,7 @@ using namespace std;
 
 namespace Wintermute {
     namespace Network {
+        Broadcast::Broadcast()  { }
 
         void Broadcast::deinitialize( ) {
             qDebug() << "(ntwk) [Broadcast] Destroying... ";
@@ -37,7 +38,6 @@ namespace Wintermute {
         }
 
         void Broadcast::start() {
-            openSocket();
             qDebug() << "(ntwk) [Broadcast] Starting broadcasting activity... ";
         }
 
@@ -57,12 +57,11 @@ namespace Wintermute {
             qDebug() << "(ntwk) [Broadcast] Attempting to read any messages..";
         }
 
-        void Broadcast::openSocket() {
-        }
-
         const bool Broadcast::isActive () {
             return false;
         }
+
+        Broadcast::~Broadcast () { }
 
         BroadcastMessage::BroadcastMessage ( const BroadcastType& brdtype ) : Message( ) {
             this->setProperty ( "typ" , "brdcst" );

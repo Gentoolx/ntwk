@@ -7,7 +7,7 @@ Name: Wintermute Network (library)
 Description: Library and development files for Wintermute's networking abilities.
 Version: @GENERIC_LIB_VERSION@
 URL: https://www.launchpad.net/wintermute
-Requires: QtCore, python
+Requires: QtCore, QtNetwork, python
 Conflicts: wntrdata > @GENERIC_LIB_VERSION@
 Libs: -L${libdir} -lwntrntwk
 Libs.private: -lm

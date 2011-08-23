@@ -22,26 +22,11 @@
 #ifndef BROADCAST_HPP
 #define BROADCAST_HPP
 
-#include <boost/asio/buffer.hpp>
-#include <boost/asio/deadline_timer.hpp>
-#include <boost/asio/ip/udp.hpp>
-#include <boost/smart_ptr.hpp>
-#include <boost/thread.hpp>
-#include <boost/system/error_code.hpp>
 #include "message.hpp"
 
-using namespace boost::asio;
-using namespace boost::this_thread;
-using namespace boost::asio::ip;
 using namespace Wintermute::Network;
 
-using boost::asio::ip::udp;
-using boost::asio::io_service;
-using boost::asio::deadline_timer;
-using boost::thread;
-using boost::system::error_code;
 using Wintermute::Network::Message;
-
 
 namespace Wintermute {
     namespace Network {
@@ -55,7 +40,8 @@ namespace Wintermute {
          * @see BroadcastMessage;
          */
         enum BroadcastType {
-            Unspecified = 0, IamAlive, Disconnected, Connecting, Identify
+            Unspecified = 0,
+            Ping
         };
 
         /**
@@ -63,46 +49,20 @@ namespace Wintermute {
          * This class mananges every aspect of Wintermute's ability to send
          * broadcast signals out onto the network.
          */
-        class Broadcast {
-            private:
-                static io_service* io_service_;
-                static deadline_timer* timer_;
-                static udp::socket* socket_;
-                static boost::thread* thread_;
-                static udp::endpoint* endpoint_;
-                static mutable_buffer* inBuffer_;
-                static boost::posix_time::milliseconds* timeout_;
+        class Broadcast : public QObject {
+            public:
                 /**
                  * @brief
                  *
-                 * @fn openSocket
+                 * @fn Broadcast
                  */
-                static void openSocket();
+                Broadcast();
                 /**
-                  * @brief Handler for timeout.
-                  * @param boost::system::error_code|e The error, if any, passed.
-                  */
-                static void timerElasped ( const error_code& );
-                /**
-                  * @brief Handler for async_accept.
-                  * @see boost::asio::ip::tcp::acceptor::async_accept
-                  * @param boost::system::error_code|e The error, if any, passed.
-                  */
-                static void handleConnect ( const error_code& );
-                /**
-                  * @brief Handler for async_write.
-                  * @see boost::asio::async_write
-                  * @param boost::system::error_code|e The error, if any, passed.
-                  * @param size_t|bytes The number of bytes sent.
-                  */
-                static void handleWrite ( const error_code&, size_t );
-                /**
-                  * @brief Handler for async_read.
-                  * @see boost::asio::async_read
-                  * @param boost::system::error_code|e The error, if any, passed.
-                  * @param size_t|bytes The number of bytes sent.
-                  */
-                static void handleRead ( const error_code&, size_t );
+                 * @brief
+                 *
+                 * @fn ~Broadcast
+                 */
+                ~Broadcast();
                 /**
                   @brief Starts the system.
                   * Opens up the sockets and begins broadcasting.
@@ -123,9 +83,6 @@ namespace Wintermute {
                   * Determines if a broadcast signal can be read, and if so, recieves it.
                   */
                 static void readSignal();
-                static void doBroadcast();
-            public:
-
                 /**
                  * @brief Initializes the broadcast system.
                  * Creates the timer, acceptor, socket and begins broadcasting messsages.
@@ -136,14 +93,13 @@ namespace Wintermute {
                  * @brief Destroys the broadcast system.
                  * Stops then destroys the timer, acceptor and socket.
                  */
-                static void destroy( );
+                static void deinitialize( );
 
                 /**
                  * @brief Determines if it's accepting.
                  * Determines if the socket exists, and if it does, if it's open.
                  */
                 static const bool isActive( );
-
         };
 
         /**
@@ -171,46 +127,8 @@ namespace Wintermute {
                  */
                 const BroadcastType getBroadcastType( ) const;
         };
-
-#ifdef  __cplusplus
-        extern "C" {
-
-            /**
-             * @brief
-             *
-             */
-            void Broadcast_initialize();
-
-            /**
-             * @brief
-             *
-             */
-            void Broadcast_destroy();
-
-            /**
-             * @brief
-             *
-             * @param BroadcastType|typ
-             */
-            BroadcastMessage* BroadcastMessage_create ( const BroadcastType = Unspecified );
-
-            /**
-             * @brief
-             *
-             * @param BroadcastMessage|
-             */
-            void BroadcastMessage_free ( BroadcastMessage const * );
-
-            /**
-             * @brief
-             *
-             * @param BroadcastMessage|
-             */
-            const BroadcastType BroadcastMessage_getBroadcastType ( BroadcastMessage const & );
-        }
-#endif
     }
 }
 #endif	/* BROADCAST_HPP */
 
-// kate: indent-mode cstyle; space-indent on; indent-width 4; 
+// kate: indent-mode cstyle; space-indent on; indent-width 4;
