@@ -1,4 +1,4 @@
-/*
+/**
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
@@ -15,8 +15,8 @@
  * Boston, MA 02111-1307, USA.
 
  * @file broadcast.hpp
- * @author Jacky Alcine <jackyalcine@gmail.com>
- * @created April 9, 2011, 1:44 PM
+ * @author Wintermute Developers <wintermute-devel@lists.launchpad.net>
+ * @date April 9, 2011, 1:44 PM
  */
 
 #ifndef BROADCAST_HPP
@@ -49,28 +49,25 @@ namespace Wintermute {
          * This class mananges every aspect of Wintermute's ability to send
          * broadcast signals out onto the network.
          */
-        class Broadcast : public QObject {
+        class Broadcast {
+            private:
+                static bool s_actv;
             public:
                 /**
-                 * @brief
-                 *
-                 * @fn Broadcast
+                 * @brief Initializes the broadcast system.
                  */
-                Broadcast();
+                static void initialize( );
+
                 /**
-                 * @brief
-                 *
-                 * @fn ~Broadcast
+                 * @brief Destroys the broadcast system.
                  */
-                ~Broadcast();
+                static void deinitialize( );
                 /**
                   @brief Starts the system.
-                  * Opens up the sockets and begins broadcasting.
                   */
                 static void start();
                 /**
                   * @brief Stops the system.
-                  * Closes the opened sockets and halts broadcasting.
                   */
                 static void stop();
                 /**
@@ -82,22 +79,9 @@ namespace Wintermute {
                   * @brief Recieves broadcast signal.
                   * Determines if a broadcast signal can be read, and if so, recieves it.
                   */
-                static void readSignal();
-                /**
-                 * @brief Initializes the broadcast system.
-                 * Creates the timer, acceptor, socket and begins broadcasting messsages.
-                 */
-                static void initialize( );
-
-                /**
-                 * @brief Destroys the broadcast system.
-                 * Stops then destroys the timer, acceptor and socket.
-                 */
-                static void deinitialize( );
-
+                static void readSignal(const Message& );
                 /**
                  * @brief Determines if it's accepting.
-                 * Determines if the socket exists, and if it does, if it's open.
                  */
                 static const bool isActive( );
         };

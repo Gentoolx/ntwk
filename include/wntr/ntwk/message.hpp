@@ -16,7 +16,7 @@
 
  * @file message.hpp
  * @author Jacky Alcine
- * @created April 3, 2011, 10:09 AM
+ * @date April 3, 2011, 10:09 AM
  */
 
 #ifndef MESSAGE_HPP
@@ -44,7 +44,7 @@ namespace Wintermute {
             Q_OBJECT
 
             private:
-                static int s_count;
+                static long s_count; /**< Holds the number of messages ever sent since the process started. */
 
                 /**
                  * @brief Initializes the message.
@@ -55,7 +55,7 @@ namespace Wintermute {
             public:
 
                 /**
-                 * @brief Default constructor.
+                 * @brief Empty constructor.
                  * Creates a new empty Message.
                  */
                 Message();
@@ -66,14 +66,21 @@ namespace Wintermute {
                  * @param  attrName The name of the attribute.
                  * @param QVariant|attrValue The value of the attribute.
                  */
-                Message ( const string&, QVariant* );
+                explicit Message ( const QString&, QVariant* );
 
                 /**
-                 * @brief Constructor, mutliple attributes.
-                 * Creates a new message with multiple attributes.
-                 * @param ValueMap|attrs The ValueMap to copy.
+                 * @brief
+                 *
+                 * @fn Message
+                 * @param
                  */
                 Message ( const Message& );
+
+                /**
+                 * @brief Destructor.
+                 * Destroys this message.
+                 */
+                ~Message();
 
                 /**
                  * @brief Gets message type.
@@ -81,14 +88,14 @@ namespace Wintermute {
                  * @note This method just calls getProperty('typ'); is provided as a convinence method.
                  * @return The type of this message, as a string.
                  */
-                const string getMessageType() const;
+                const QString getMessageType() const;
 
                 /**
                  * @brief
                  *
                  * @fn toString
                  */
-                const string toString() const;
+                const QString toString() const;
 
                 /**
                  * @brief Gets time of spawning.
@@ -97,11 +104,6 @@ namespace Wintermute {
                  * @return The time of creation.
                  */
                 const QDateTime getCreationTime() const;
-                /**
-                 * @brief Destructor.
-                 * Destroys this message.
-                 */
-                ~Message();
 
                 /**
                  * @brief Deserializing method.
@@ -109,10 +111,12 @@ namespace Wintermute {
                  * @fn Message
                  * @param  data The data representing this message.
                  */
-                static Message* fromString ( const string& );
+                static Message* fromString ( const QString& );
         };
     }
 }
+
+Q_DECLARE_METATYPE(Wintermute::Network::Message)
 
 #endif	/* MESSAGE_HPP */
 

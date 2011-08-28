@@ -16,10 +16,13 @@
 
  * @file message.cpp
  * @author Jacky Alcine
- * @created April 3, 2011, 10:10 AM
+ * @date April 3, 2011, 10:10 AM
  */
 
 #include "message.hpp"
+#include <qjson/qobjecthelper.h>
+#include <qjson/parser.h>
+#include <qjson/serializer.h>
 #include <QtDebug>
 #include <QDateTime>
 
@@ -32,18 +35,21 @@ using Wintermute::Network::Message;
 
 namespace Wintermute {
     namespace Network {
-        int Message::s_count = 0;
+        long Message::s_count = 0;
 
         Message::Message () {
             __init ( );
         }
 
-        /// @todo Find a means of copying all of the custom properties set from &msg to this.
         Message::Message ( const Message &msg ) {
+            QList<QByteArray> l_propNames = msg.dynamicPropertyNames ();
+            foreach (const QString l_propName, l_propNames)
+                this->setProperty (l_propName.toStdString ().c_str (),msg.property (l_propName.toStdString ().c_str ()));
+
             __init();
         }
 
-        Message::Message ( const string& property, QVariant* value ) {
+        Message::Message ( const QString& property, QVariant* value ) {
             __init ( );
         }
 
@@ -63,18 +69,19 @@ namespace Wintermute {
             else NULL;
         }
 
-        const string Message::getMessageType () const {
+        const QString Message::getMessageType () const {
             QVariant l_vrt = this->property ( "MessageType" ).toDateTime();
-            if (l_vrt.isValid ()) return l_vrt.toString ().toStdString ();
+            if (l_vrt.isValid ()) return l_vrt.toString ();
             else return "";
         }
 
-        const string Message::toString () const {
+        /// @todo Find a means of converting this object's properties to a QString. (Using QJson)
+        const QString Message::toString () const {
 
         }
 
-        /// @todo Implement the deconstruction method from JSON to a Message here.
-        Message* Message::fromString ( const string& serializingText ) {
+        /// @todo Find a means of converting a QString into a Message.
+        Message* Message::fromString ( const QString& serializedText ) {
 
         }
     }

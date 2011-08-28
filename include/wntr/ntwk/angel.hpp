@@ -16,7 +16,7 @@
  *
  * @file angel.hpp
  * @author Jacky Alcine
- * @created April 3, 2011, 3:52 PM
+ * @date April 3, 2011, 3:52 PM
  *
  * Definition of some easier-to-type names for the system.
  */

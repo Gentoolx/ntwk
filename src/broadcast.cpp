@@ -1,4 +1,4 @@
-/*
+/**
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
@@ -15,18 +15,16 @@
  * Boston, MA 02111-1307, USA.
 
  * @file broadcast.cpp
- * @author Jacky Alcine <jackyalcine@gmail.com>
- * @created April 9, 2011, 1:45 PM
+ * @date April 9, 2011, 1:45 PM
  */
 
 #include "broadcast.hpp"
+#include "server.hpp"
 #include <QtDebug>
 using namespace std;
 
 namespace Wintermute {
     namespace Network {
-        Broadcast::Broadcast()  { }
-
         void Broadcast::deinitialize( ) {
             qDebug() << "(ntwk) [Broadcast] Destroying... ";
             stop();
@@ -48,11 +46,10 @@ namespace Wintermute {
         void Broadcast::sendSignal() {
             /// @todo Send out one broadcast message and queue another to be sent.
             BroadcastMessage aMsg;
-            const string theData ( aMsg.toString () );
-            qDebug() << "(ntwk) [Broadcast] Attempting to send message '" << aMsg.toString ().c_str () << "'";
+            qDebug() << "(ntwk) [Broadcast] Attempting to send message '" << aMsg.toString () << "'";
         }
 
-        void Broadcast::readSignal() {
+        void Broadcast::readSignal(const Message& p_msg) {
             /// @todo Read ONE broadcast message and queue to read another.
             qDebug() << "(ntwk) [Broadcast] Attempting to read any messages..";
         }
@@ -60,8 +57,6 @@ namespace Wintermute {
         const bool Broadcast::isActive () {
             return false;
         }
-
-        Broadcast::~Broadcast () { }
 
         BroadcastMessage::BroadcastMessage ( const BroadcastType& brdtype ) : Message( ) {
             this->setProperty ( "typ" , "brdcst" );

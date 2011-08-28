@@ -29,9 +29,9 @@ using namespace Wintermute::Network;
 namespace Wintermute {
     namespace Network {
         BOOST_PYTHON_MODULE ( wntrntwk ) {
-            class_<Message> ( "Message",init<const string, QVariant*>() )
+            class_<Message> ( "Message",init<const QString&, QVariant*>() )
             .def ( "setProperty",&Message::setProperty )
-            .def("getProperty",&Message::property)
+            .def( "getProperty",&Message::property )
             .def ( "getMessageType",&Message::getMessageType )
             .def ( "toString",&Message::toString );
 
