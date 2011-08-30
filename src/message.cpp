@@ -24,7 +24,6 @@
 #include <qjson/parser.h>
 #include <qjson/serializer.h>
 #include <QtDebug>
-#include <QDateTime>
 
 using namespace std;
 using namespace Wintermute::Network;
@@ -58,18 +57,18 @@ namespace Wintermute {
 
         void Message::__init () {
             QDateTime now = QDateTime::currentDateTimeUtc ();
-            qDebug() << "(ntwk) [Message] Generated message #" << Message::s_count << "; created on" << now << ".";
+            //qDebug() << "(ntwk) [Message] Generated message #" << Message::s_count << "; created on" << now << ".";
             this->setProperty ( "TimeStamp" , now );
             Message::s_count++;
         }
 
-        const QDateTime Message::getCreationTime () const {
+        const QDateTime Message::creationTime () const {
             QVariant l_vrt = this->property ( "TimeStamp" ).toDateTime();
             if (l_vrt.isValid ()) return l_vrt.toDateTime ();
             else NULL;
         }
 
-        const QString Message::getMessageType () const {
+        const QString Message::type () const {
             QVariant l_vrt = this->property ( "MessageType" ).toDateTime();
             if (l_vrt.isValid ()) return l_vrt.toString ();
             else return "";
@@ -77,12 +76,12 @@ namespace Wintermute {
 
         /// @todo Find a means of converting this object's properties to a QString. (Using QJson)
         const QString Message::toString () const {
-
+            return "COOHIE!";
         }
 
         /// @todo Find a means of converting a QString into a Message.
         Message* Message::fromString ( const QString& serializedText ) {
-
+            return NULL;
         }
     }
 }

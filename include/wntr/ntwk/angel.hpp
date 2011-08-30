@@ -1,4 +1,8 @@
-/*
+/**
+ * @file angel.hpp
+ * @author Wintermute Developers <wintermute-devel@lists.launchpad.net>
+ * @date April 3, 2011, 3:52 PM
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
@@ -14,11 +18,6 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * @file angel.hpp
- * @author Jacky Alcine
- * @date April 3, 2011, 3:52 PM
- *
- * Definition of some easier-to-type names for the system.
  */
 
 #ifndef ANGEL_HPP

@@ -19,52 +19,90 @@
  */
 
 #include "broadcast.hpp"
-#include "server.hpp"
+#include "system.hpp"
+#include <QTimer>
 #include <QtDebug>
+
 using namespace std;
 
 namespace Wintermute {
     namespace Network {
-        void Broadcast::deinitialize( ) {
-            qDebug() << "(ntwk) [Broadcast] Destroying... ";
-            stop();
-        }
+        Broadcast* Broadcast::s_brdcst = NULL;
 
         void Broadcast::initialize( ) {
+            s_brdcst = new Broadcast;
             qDebug() << "(ntwk) [Broadcast] Initializing... ";
+
+            connect(System::instance (),SIGNAL(messageRecieved(Message)),
+                    s_brdcst,SLOT(readSignal(Message)));
+
             start();
+        }
+
+        void Broadcast::deinitialize( ) {
+            delete s_brdcst;
+            qDebug() << "(ntwk) [Broadcast] Destroying... ";
+            System::instance()->disconnect(s_brdcst,SLOT(readSignal(const Message&)));
+            stop();
         }
 
         void Broadcast::start() {
             qDebug() << "(ntwk) [Broadcast] Starting broadcasting activity... ";
+            s_brdcst->sendSignal ();
         }
 
         void Broadcast::stop() {
             qDebug() << "(ntwk) [Broadcast] Stopping broadcasting activity... ";
         }
 
-        void Broadcast::sendSignal() {
-            /// @todo Send out one broadcast message and queue another to be sent.
-            BroadcastMessage aMsg;
-            qDebug() << "(ntwk) [Broadcast] Attempting to send message '" << aMsg.toString () << "'";
+        void Broadcast::sendSignal() const {
+            BroadcastMessage aMsg(BroadcastMessage::Online);
+            //qDebug() << "(ntwk) [Broadcast] Attempting to send message '" << aMsg.toString () << "'";
+            System::send(aMsg);
+            QTimer::singleShot(200, s_brdcst, SLOT(sendSignal()));
         }
 
-        void Broadcast::readSignal(const Message& p_msg) {
-            /// @todo Read ONE broadcast message and queue to read another.
+        void Broadcast::readSignal(const Message& p_msg) const {
             qDebug() << "(ntwk) [Broadcast] Attempting to read any messages..";
+            if (p_msg.type() == "Broadcast"){
+                BroadcastMessage l_msg(p_msg);
+                switch (l_msg.broadcastType()){
+                    case BroadcastMessage::Ping:
+                        emit pingReply(l_msg.property ("Sender").toString ());
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
         const bool Broadcast::isActive () {
-            return false;
+            return (s_brdcst != NULL);
+        }
+
+        void Broadcast::ping(const QString& p_qualifier) {
+            BroadcastMessage l_msg(BroadcastMessage::Ping);
+            l_msg.setProperty ("Recipient",p_qualifier);
+            System::send(l_msg);
+        }
+
+        /// @todo Just convert the address into a qualifier and send it to the other version of the method.
+        void Broadcast::ping(const QHostAddress& p_addr){
+            Broadcast::ping("");
+        }
+
+        BroadcastMessage::BroadcastMessage( const Message& p_msg) : Message(p_msg) {
+
         }
 
         BroadcastMessage::BroadcastMessage ( const BroadcastType& brdtype ) : Message( ) {
-            this->setProperty ( "typ" , "brdcst" );
-            this->setProperty ( "brdcst_typ" , ( ( int ) brdtype ) );
+            this->setProperty ( "Type" , "Broadcast" );
+            this->setProperty ( "BroadcastType" , ( ( int ) brdtype ) );
+            this->setProperty ( "Recipient" , "Wintermute2");
         }
 
-        const BroadcastType BroadcastMessage::getBroadcastType( ) const {
-            const int val = this->property ( "brdcst_typ" ).toInt ();
+        const BroadcastMessage::BroadcastType BroadcastMessage::broadcastType( ) const {
+            const int val = this->property ( "BroadcastType" ).toInt ();
             return static_cast< const BroadcastType > ( val );
         }
     }

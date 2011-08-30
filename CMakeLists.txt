@@ -26,8 +26,12 @@ find_package(Qt4 4.4.3 COMPONENTS
     QJSON
     REQUIRED)
 find_package(PkgConfig REQUIRED)
-## Used to generate QR images.
+pkg_check_modules(QCA qca2>=2.0.2)
+
+## Used to generate QR images (soon, but might be moved to WntrGui).
 #pkg_check_modules(QRENCODE libqrencode>=3.1.1-1)
+
+## Used to implement mail servers and clients.
 #pkg_check_modules(QMFCLIENT qmfclient>=1.0)
 #pkg_check_modules(QMFMESSAGESERVER qmfmessageserver>=1.0)
 #

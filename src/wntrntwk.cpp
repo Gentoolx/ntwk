@@ -31,12 +31,12 @@ namespace Wintermute {
         BOOST_PYTHON_MODULE ( wntrntwk ) {
             class_<Message> ( "Message",init<const QString&, QVariant*>() )
             .def ( "setProperty",&Message::setProperty )
-            .def( "getProperty",&Message::property )
-            .def ( "getMessageType",&Message::getMessageType )
+            .def( "property",&Message::property )
+            .def ( "messageType",&Message::type )
             .def ( "toString",&Message::toString );
 
-            class_<BroadcastMessage, bases<Message> > ( "BroadcastMessage",init<const BroadcastType>() )
-            .def ( "getBroadcastType",&BroadcastMessage::getBroadcastType );
+            class_<BroadcastMessage, bases<Message> > ( "BroadcastMessage",init<const BroadcastMessage::BroadcastType>() )
+            .def ( "broadcastType",&BroadcastMessage::broadcastType );
 
             class_<Broadcast, boost::noncopyable > ( "Broadcast" ,no_init )
             .def ( "initialize",&Broadcast::initialize )

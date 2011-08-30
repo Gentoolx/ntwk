@@ -22,10 +22,9 @@
 #ifndef MESSAGE_HPP
 #define	MESSAGE_HPP
 
-#include <map>
-#include <string>
-#include <algorithm>
 #include <QVariant>
+#include <QDateTime>
+#include <QVariantMap>
 
 using namespace std;
 
@@ -37,17 +36,42 @@ namespace Wintermute {
         struct Message;
 
         /**
-         * @brief Foundational message class.
-         * This class represents the underlying mechanics of network interactivites for Wintermute.
+         * @brief Foundational message class of WntrNtwk.
+         *
+         * This class represents the underlying mechanics of network
+         * interactivites for Wintermute. It provides a property-based
+         * system that can convert QVariant-compatiable objects into
+         * strings and reproduce the message on the other end of the
+         * transmission.
+         *
+         * This class can stand on its own, but derivations of this class
+         * (BroadcastMessage and RequestMessage) provide a shorter syntax
+         * and more of a ease of use to implement. Simple constructing goes
+         * as follows:
+         *
+         * @code
+         * Message l_msg;                   // We prefer that you use pointers.
+         * l_msg.setAttribute("Foo",3);
+         * l_msg.setAttribute("Bar","Hello world!");
+         * qDebug() << l_msg.toString();    // { 'Foo' : 3, 'Bar' : 'Hello world!' };
+         * @endcode
+         *
+         * @attention Encryption of said messages should be required, if not
+         *            at least signing of messages. QCA provides MD5, SHA-1, and OpenGPG.
+         *            We're good.
+         * @todo Add operating overloading for searching through messages (operator[](const QString)).
          */
         class Message : public QObject {
             Q_OBJECT
+            Q_PROPERTY(const QString Type READ type)
+            Q_PROPERTY(const QDateTime CreationTime READ creationTime)
 
             private:
                 static long s_count; /**< Holds the number of messages ever sent since the process started. */
 
                 /**
                  * @brief Initializes the message.
+                 *
                  * Loads and corrects the few prerequisties of the Message.
                  */
                 void __init();
@@ -56,60 +80,69 @@ namespace Wintermute {
 
                 /**
                  * @brief Empty constructor.
+                 *
                  * Creates a new empty Message.
                  */
                 Message();
 
                 /**
                  * @brief Constructor, single attribute.
+                 *
                  * Creates a new message with one attribute.
-                 * @param  attrName The name of the attribute.
-                 * @param QVariant|attrValue The value of the attribute.
+                 * @param p_attrName The name of the attribute.
+                 * @param p_attrValue The value of the attribute.
                  */
                 explicit Message ( const QString&, QVariant* );
 
                 /**
-                 * @brief
+                 * @brief Copy constructor.
                  *
-                 * @fn Message
-                 * @param
+                 * Creates a copy of a Message.
+                 * @param p_msg The Message to be copied.
                  */
                 Message ( const Message& );
 
                 /**
                  * @brief Destructor.
+                 *
                  * Destroys this message.
                  */
                 ~Message();
 
                 /**
                  * @brief Gets message type.
+                 *
                  * Obtains the type of messsage that this message exposes.
-                 * @note This method just calls getProperty('typ'); is provided as a convinence method.
+                 * @note This method just calls getProperty('Type'); is provided as a convinence method.
                  * @return The type of this message, as a string.
                  */
-                const QString getMessageType() const;
+                const QString type() const;
 
                 /**
-                 * @brief
+                 * @brief Converts this Message into a string.
                  *
+                 * Using JSON (Java Script Object Notation), the value of the properties
+                 * of this Message are converted into a serializable format.
                  * @fn toString
                  */
                 const QString toString() const;
 
                 /**
                  * @brief Gets time of spawning.
+                 *
                  * Obtains the time that this message was created.
-                 * @note This method merely serves as a convinence method; you can get the value by calling getProperty('_ts').
+                 * @note This method merely serves as a convinence method; you can get the value by calling getProperty('TimeStamp').
                  * @return The time of creation.
                  */
-                const QDateTime getCreationTime() const;
+                const QDateTime creationTime() const;
 
                 /**
-                 * @brief Deserializing method.
-                 * Creates a Message by deserializing the text passed from Boost.
+                 * @brief Converts a string into a Message.
+                 *
+                 * Creates a Message by deserializing the text that should represent JSON.
                  * @fn Message
-                 * @param  data The data representing this message.
+                 * @param data The data representing this message.
+                 * @return A shiny new Message.
                  */
                 static Message* fromString ( const QString& );
         };

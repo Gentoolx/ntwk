@@ -23,9 +23,10 @@
 #ifndef WNTRNTWK_HPP
 #define WNTRNTWK_HPP
 
+#include "angel.hpp"
 #include "message.hpp"
 #include "broadcast.hpp"
-#include "angel.hpp"
+#include "system.hpp"
 
 namespace Wintermute {
     namespace Network {
@@ -35,6 +36,7 @@ namespace Wintermute {
          * @see Wintermute::Network::Broadcast::Initialize
          */
         static void Initialize ( ) {
+            System::start();
             Broadcast::initialize ( );
         }
 
@@ -46,6 +48,7 @@ namespace Wintermute {
          */
         static void Deinitialize ( void ) {
             Broadcast::deinitialize ();
+            System::stop();
         }
     }
 }
