@@ -1,6 +1,6 @@
 /**
  * @file    server.hpp
- * @author  Jacky Alcine <jackyalcine@gmail.com>
+ * @author  Wintermute Developers <wintermute-devel@lists.launchpad.net>
  * @date 8/26/2011
  *
  * Copyright (C) 2011 by Jacky Alcine
