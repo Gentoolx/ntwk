@@ -46,9 +46,9 @@ namespace Wintermute {
          */
         class Broadcast : public QObject {
             Q_OBJECT
+
             private:
                 static Broadcast* s_brdcst;
-
 
             signals:
                 /**
@@ -210,4 +210,4 @@ namespace Wintermute {
 }
 #endif	/* BROADCAST_HPP */
 
-// kate: indent-mode cstyle; space-indent on; indent-width 4;
+// kate: indent-mode cstyle; space-indent on; indent-width 0;

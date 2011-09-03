@@ -64,14 +64,14 @@ namespace Wintermute {
 
         void Broadcast::readSignal(const Message& p_msg) const {
             qDebug() << "(ntwk) [Broadcast] Attempting to read any messages..";
-            if (p_msg.type() == "Broadcast"){
+            if (p_msg.type() == "Broadcast") {
                 BroadcastMessage l_msg(p_msg);
-                switch (l_msg.broadcastType()){
-                    case BroadcastMessage::Ping:
-                        emit pingReply(l_msg.property ("Sender").toString ());
-                        break;
-                    default:
-                        break;
+                switch (l_msg.broadcastType()) {
+                case BroadcastMessage::Ping:
+                    emit pingReply(l_msg.property ("Sender").toString ());
+                    break;
+                default:
+                    break;
                 }
             }
         }
@@ -87,7 +87,7 @@ namespace Wintermute {
         }
 
         /// @todo Just convert the address into a qualifier and send it to the other version of the method.
-        void Broadcast::ping(const QHostAddress& p_addr){
+        void Broadcast::ping(const QHostAddress& p_addr) {
             Broadcast::ping("");
         }
 
@@ -107,4 +107,4 @@ namespace Wintermute {
         }
     }
 }
-// kate: indent-mode cstyle; space-indent on; indent-width 4;
+// kate: indent-mode cstyle; space-indent on; indent-width 0;

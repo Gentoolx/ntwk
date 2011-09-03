@@ -31,7 +31,7 @@ pkg_check_modules(QCA qca2>=2.0.2)
 ## Used to generate QR images (soon, but might be moved to WntrGui).
 #pkg_check_modules(QRENCODE libqrencode>=3.1.1-1)
 
-## Used to implement mail servers and clients.
+## Used to implement mail servers and clients..
 #pkg_check_modules(QMFCLIENT qmfclient>=1.0)
 #pkg_check_modules(QMFMESSAGESERVER qmfmessageserver>=1.0)
 #

@@ -60,6 +60,7 @@ namespace Wintermute {
          *            at least signing of messages. QCA provides MD5, SHA-1, and OpenGPG.
          *            We're good.
          * @todo Add operating overloading for searching through messages (operator[](const QString)).
+         * @todo Add stream operating support.
          */
         class Message : public QObject {
             Q_OBJECT
@@ -153,4 +154,4 @@ Q_DECLARE_METATYPE(Wintermute::Network::Message)
 
 #endif	/* MESSAGE_HPP */
 
-// kate: indent-mode cstyle; space-indent on; indent-width 4;
+// kate: indent-mode cstyle; space-indent on; indent-width 0;

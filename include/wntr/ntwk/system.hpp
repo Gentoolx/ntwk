@@ -84,8 +84,8 @@ namespace Wintermute {
          * @class System "include/wntr/ntwk/system.hpp"
          */
         class System : public QObject {
-            Q_OBJECT
-            friend class Server;
+                Q_OBJECT
+                friend class Server;
 
             signals:
                 /**
@@ -546,25 +546,114 @@ namespace Wintermute {
                 static LocalServer s_lclSrv;
         };
 
+        /**
+         * @brief
+         *
+         * @class TcpServer system.hpp "include/wntr/ntwk/system.hpp"
+         */
         class TcpServer : public Server {
             Q_OBJECT
 
             public:
+                /**
+                 * @brief
+                 *
+                 * @fn TcpServer
+                 */
                 TcpServer();
+
+                /**
+                 * @brief
+                 *
+                 * @fn TcpServer
+                 * @param
+                 */
                 TcpServer(const TcpServer&);
+
+                /**
+                 * @brief
+                 *
+                 * @fn ~TcpServer
+                 */
                 virtual ~TcpServer();
+
+                /**
+                 * @brief
+                 *
+                 * @fn start
+                 */
                 virtual void start ();
+
+                /**
+                 * @brief
+                 *
+                 * @fn stop
+                 */
                 virtual void stop ();
+
+                /**
+                 * @brief
+                 *
+                 * @fn send
+                 * @param
+                 */
                 virtual void send (const Message &);
+
+                /**
+                 * @brief
+                 *
+                 * @fn isActive
+                 */
                 virtual const bool isActive() const;
+
+                /**
+                 * @brief
+                 *
+                 * @fn features
+                 */
                 virtual const Features features() const;
+
+                /**
+                 * @brief
+                 *
+                 * @fn protocol
+                 */
                 virtual const QString protocol () const;
 
             protected:
+                /**
+                 * @brief
+                 *
+                 * @fn connectToSocket
+                 */
                 virtual void connectToSocket ();
+
+                /**
+                 * @brief
+                 *
+                 * @fn disconnectFromSocket
+                 */
                 virtual void disconnectFromSocket ();
+
+                /**
+                 * @brief
+                 *
+                 * @fn handleConnected
+                 */
                 virtual void handleConnected ();
+
+                /**
+                 * @brief
+                 *
+                 * @fn handleConnection
+                 */
                 virtual void handleConnection ();
+
+                /**
+                 * @brief
+                 *
+                 * @fn handleRead
+                 */
                 virtual void handleRead ();
 
             private:
@@ -577,3 +666,4 @@ namespace Wintermute {
 }
 
 #endif // SERVER_HPP
+// kate: indent-mode cstyle; space-indent on; indent-width 0;

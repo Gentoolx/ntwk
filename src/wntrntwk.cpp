@@ -43,7 +43,6 @@ namespace Wintermute {
             .def ( "isActive",&Broadcast::isActive )
             .def ( "deinitialize",&Broadcast::deinitialize );
         }
-
     }
 }
-// kate: indent-mode cstyle; space-indent on; indent-width 4;
+// kate: indent-mode cstyle; space-indent on; indent-width 0;
