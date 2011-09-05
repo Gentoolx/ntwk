@@ -3,7 +3,7 @@
  * @author  Wintermute Developers <wintermute-devel@lists.launchpad.net>
  * @date 8/26/2011
  *
- * Copyright (C) 2011 by Jacky Alcine
+ * Copyright (C) 2011 by Wintermute Developers <wintermute-devel@lists.launchpad.net>
  *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -666,4 +666,4 @@ namespace Wintermute {
 }
 
 #endif // SERVER_HPP
-// kate: indent-mode cstyle; space-indent on; indent-width 0;
+// kate: indent-mode cstyle; space-indent on; indent-width 4;

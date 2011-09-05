@@ -15,7 +15,7 @@
  * Boston, MA 02111-1307, USA.
 
  * @file message.hpp
- * @author Jacky Alcine
+ * @author Wintermute Developers <wintermute-devel@lists.launchpad.net>
  * @date April 3, 2011, 10:09 AM
  */
 
@@ -154,4 +154,4 @@ Q_DECLARE_METATYPE(Wintermute::Network::Message)
 
 #endif	/* MESSAGE_HPP */
 
-// kate: indent-mode cstyle; space-indent on; indent-width 0;
+// kate: indent-mode cstyle; space-indent on; indent-width 4;

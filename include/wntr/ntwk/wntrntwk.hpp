@@ -1,5 +1,5 @@
 /*
- *  Author: Jacky Alcine <jacky.alcine@thesii.org>
+ *  Author: Wintermute Developers <wintermute-devel@lists.launchpad.net>
  *
  *  Copyright 2011 (c) Wintermute Developers
  *
@@ -55,4 +55,4 @@ namespace Wintermute {
 
 
 #endif /* WNTRNTWK_HPP */
-// kate: indent-mode cstyle; space-indent on; indent-width 0;
+// kate: indent-mode cstyle; space-indent on; indent-width 4;

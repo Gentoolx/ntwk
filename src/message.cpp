@@ -15,7 +15,7 @@
  * Boston, MA 02111-1307, USA.
 
  * @file message.cpp
- * @author Jacky Alcine
+ * @author Wintermute Developers <wintermute-devel@lists.launchpad.net>
  * @date April 3, 2011, 10:10 AM
  */
 
@@ -85,4 +85,4 @@ namespace Wintermute {
         }
     }
 }
-// kate: indent-mode cstyle; space-indent on; indent-width 0;
+// kate: indent-mode cstyle; space-indent on; indent-width 4;
