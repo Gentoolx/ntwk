@@ -136,6 +136,10 @@ namespace Wintermute {
             if (m_srvr->isListening ()) {
                 qDebug() << "(ntwk) [LocalServer] Starting local server with name" << m_srvr->serverName ();
                 connect(m_srvr,SIGNAL(newConnection()),this,SLOT(handleConnection()));
+
+                m_brdcstSckt = new QLocalSocket(this);
+                m_brdcstSckt->connectToServer ("Wintermute",QLocalSocket::ReadOnly);
+                connect(m_brdcstSckt,SIGNAL(connected()),this,SLOT(handleConnected()));
             } else
                 qDebug() << "(ntwk) [LocalServer] Failed to listen:" << m_srvr->errorString ();
         }
@@ -168,6 +172,12 @@ namespace Wintermute {
                 }
             } else
                 qDebug() << "(ntwk) [LocalServer]" << m_sckt->errorString ();
+
+            if (m_brdcstSckt->isValid ()){
+                qDebug() << "(ntwk) [LocalServer] Socket connected to" << m_sckt->serverName();
+                connect(m_brdcstSckt,SIGNAL(readyRead()),this,SLOT(handleRead()));
+            } else
+                qDebug() << "(ntwk) [LocalServer]" << m_brdcstSckt->errorString ();
         }
 
         void LocalServer::handleConnection() {
@@ -191,6 +201,15 @@ namespace Wintermute {
                 emit messageRecieved (*l_msg);
             } else
                 qDebug() << m_sckt->errorString ();
+
+            if (m_brdcstSckt->isValid () && m_brdcstSckt->isReadable ()){
+                qDebug() << "(ntwk) [LocalServer] Reading data from" << m_brdcstSckt << "; bytes:" << m_sckt->size ();
+                QByteArray l_buffer = m_brdcstSckt->readAll ();
+                qDebug() << l_buffer;
+                const Message* l_msg = Message::fromString (l_buffer);
+                emit messageRecieved (*l_msg);
+            } else
+                qDebug() << m_brdcstSckt->errorString ();
         }
 
         void LocalServer::stop () {
@@ -248,14 +267,14 @@ namespace Wintermute {
         }
 
         void TcpServer::connectToSocket() {
-            //quint16 l_port = 1300;
+            quint16 l_port = 1300;
             if (m_srvr->listen(QHostAddress::Broadcast))
                 qDebug() << "(ntwk) [TcpServer] Started TCP server at" << m_srvr->serverAddress().toString() << ":" << m_srvr->serverPort();
             else
                 qDebug() << "(ntwk) [TcpServer]" << m_srvr->errorString();
             connect(m_srvr,SIGNAL(newConnection()),this,SLOT(handleConnection()));
 
-            m_brdcstSckt->connectToHost(QHostAddress::Broadcast,m_srvr->serverPort());
+            m_brdcstSckt->connectToHost(QHostAddress::Broadcast,l_port);
             connect(m_brdcstSckt,SIGNAL(readyRead()), this,SLOT(handleRead()));
         }
 
@@ -270,11 +289,18 @@ namespace Wintermute {
             const QHostAddress l_hostAddr = System::toHostAddress (l_hostName);
 
             if (l_hostAddr != QHostAddress::Null) {
+                int l_hostPort = 0;
+                if (l_hostAddr == QHostAddress::Broadcast || !l_hostName.contains (":"))
+                    l_hostPort = 1300;
+                else
+                    l_hostPort = l_hostName.split (":").at (1).toInt ();
+
                 m_sckt = new QTcpSocket(this);
                 connect(m_sckt,SIGNAL(connected()), this,SLOT(handleConnected()));
-                m_sckt->connectToHost(l_hostAddr,QIODevice::ReadOnly);
+                //qDebug() << "(ntwk) [TcpServer] Connecting to " << l_hostAddr << l_hostPort;
+                m_sckt->connectToHost(l_hostAddr,l_hostPort,QIODevice::ReadOnly);
             } else {
-                //qDebug() << "(ntwk) [TcpServer] Host not found at" << l_hst;
+                //qDebug() << "(ntwk) [TcpServer] Host not found at" << l_hostName;
             }
         }
 
@@ -313,11 +339,13 @@ namespace Wintermute {
                 qDebug() << m_sckt->errorString ();
 
             if (m_brdcstSckt->isValid() && m_brdcstSckt->isReadable()) {
+                qDebug() << "(ntwk) [TcpServer] Reading data from" << m_brdcstSckt << "; bytes:" << m_sckt->size ();
                 QByteArray l_buffer = m_sckt->readAll ();
                 qDebug() << l_buffer;
                 const Message* l_msg = Message::fromString (l_buffer);
                 emit messageRecieved (*l_msg);
-            }
+            } else
+                qDebug() << m_brdcstSckt->errorString ();
         }
 
         const QString TcpServer::protocol() const {
