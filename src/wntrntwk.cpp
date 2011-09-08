@@ -28,6 +28,8 @@ using namespace Wintermute::Network;
 
 namespace Wintermute {
     namespace Network {
+        Interface* Interface::s_ints = NULL;
+
         BOOST_PYTHON_MODULE ( wntrntwk ) {
             class_<Message> ( "Message",init<const QString&, QVariant*>() )
             .def ( "setProperty",&Message::setProperty )
@@ -39,9 +41,35 @@ namespace Wintermute {
             .def ( "broadcastType",&BroadcastMessage::broadcastType );
 
             class_<Broadcast, boost::noncopyable > ( "Broadcast" ,no_init )
-            .def ( "initialize",&Broadcast::initialize )
+            .def ( "load",&Broadcast::load )
             .def ( "isActive",&Broadcast::isActive )
-            .def ( "deinitialize",&Broadcast::deinitialize );
+            .def ( "unload",&Broadcast::unload );
+        }
+
+        Interface::Interface() { Interface::s_ints = this; }
+
+        Interface* Interface::instance() {
+            if (s_ints == NULL)
+                s_ints = new Interface;
+
+            return s_ints;
+        }
+
+        void Interface::start() const {
+            System::start();
+            Broadcast::load ( );
+
+            emit started();
+        }
+
+        void Interface::stop() const {
+            System::stop ();
+            Broadcast::unload ();
+            emit stopped();
+        }
+
+        const bool Interface::isActive() {
+            return System::isActive();
         }
     }
 }

@@ -3,9 +3,10 @@ cmake_minimum_required(VERSION 2.8)
 
 set(MOC_CODE )
 set(WNTRNTWK_MAJOR_VERSION 0)
-set(WNTRNTWK_MINOR_VERSION 01)
+set(WNTRNTWK_MINOR_VERSION 0)
+set(WNTRNTWK_MICRO_VERSION 1)
 set(WNTRNTWK_VERSION
-    ${WNTRNTWK_MAJOR_VERSION}.${WNTRNTWK_MINOR_VERSION})
+    ${WNTRNTWK_MAJOR_VERSION}.${WNTRNTWK_MINOR_VERSION}${WNTRNTWK_MICRO_VERSION})
 #
 # Custom modules
 #
@@ -16,14 +17,18 @@ list(APPEND CMAKE_MODULE_PATH "cmake/Modules")
 #
 include(WinterDefaults)
 include(WinterLibsDependencies)
+include(WinterMacros)
+
+find_package(PythonLibs REQUIRED)
 find_package(Boost 1.4 COMPONENTS
     python
     REQUIRED)
-find_package(PythonLibs 2.6 REQUIRED)
 find_package(Qt4 4.4.3 COMPONENTS
     QtCore
     QtNetwork
     QJSON
+    QtDBus
+    QT_DONT_USE_QTGUI
     REQUIRED)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(QCA qca2>=2.0.2)
@@ -58,8 +63,10 @@ set(WNTRNTWK_LIBRARIES ${Boost_LIBRARIES} ${QT_LIBRARIES} ${QJSON_LIBRARIES} ${P
 #
 # Includes
 #
-include_directories(${WNTRNTWK_INCLUDE_DIRS}
-    "include/wntr/ntwk")
+include_directories("${PROJECT_SOURCE_DIR}/include/wntr/ntwk"
+    "${PROJECT_SOURCE_DIR}/include/wntr"
+    "${PROJECT_SOURCE_DIR}/include"
+    ${WNTRNTWK_INCLUDE_DIRS})
 
 #
 # Files

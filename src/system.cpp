@@ -86,6 +86,15 @@ namespace Wintermute {
             return l_srvrs;
         }
 
+        const bool System::isActive() {
+            foreach (const Server* l_srvr, s_servers){
+                if (l_srvr->isActive ())
+                    return true;
+            }
+
+            return false;
+        }
+
         /// @todo Be sure to prohibit the user from having qualifiers that are reserved qualifiers.
         /// @todo Where should the qualifiers list be stored?
         /// @todo Doing a host-name lookup could return a list of hosts. Should we return that list?
@@ -104,6 +113,12 @@ namespace Wintermute {
                 else
                     return QHostAddress::Broadcast;
             }
+
+            return QHostAddress::Broadcast;
+        }
+
+        const QString System::toQualifier (const QHostAddress &p_hostAddr) {
+            return "broadcast";
         }
 
         System::~System () {  }
@@ -279,6 +294,7 @@ namespace Wintermute {
         }
 
         void TcpServer::disconnectFromSocket() {
+            qDebug() << "(ntwk) [TcpServer] Stopping TCP server" << m_srvr->serverAddress ().toString () << m_srvr->serverPort ();
             m_brdcstSckt->disconnectFromHost();
             m_srvr->close();
         }

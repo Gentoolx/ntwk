@@ -163,7 +163,12 @@ namespace Wintermute {
                  * @fn allServers
                  */
                 static const QStringList allServers();
-
+                /**
+                 * @brief
+                 *
+                 * @fn isActive
+                 */
+                static const bool isActive();
                 /**
                  * @brief Obtains an instance.
                  *

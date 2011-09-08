@@ -29,55 +29,70 @@ namespace Wintermute {
     namespace Network {
         Broadcast* Broadcast::s_brdcst = NULL;
 
-        void Broadcast::initialize( ) {
-            s_brdcst = new Broadcast;
-            qDebug() << "(ntwk) [Broadcast] Initializing... ";
-
-            connect(System::instance (),SIGNAL(messageRecieved(Message)),
-                    s_brdcst,SLOT(readSignal(Message)));
-
-            start();
+        Broadcast::Broadcast() {
+            Broadcast::s_brdcst = this;
         }
 
-        void Broadcast::deinitialize( ) {
-            delete s_brdcst;
-            qDebug() << "(ntwk) [Broadcast] Destroying... ";
-            System::instance()->disconnect(s_brdcst,SLOT(readSignal(const Message&)));
+        Broadcast::~Broadcast() {
+            System::instance()->disconnect(s_brdcst,SLOT(readSignal(Message)));
+        }
+
+        void Broadcast::load( ) {
+            connect(System::instance (),SIGNAL(messageRecieved(Message)), s_brdcst,SLOT(readSignal(Message)));
+            start();
+            qDebug() << "(ntwk) [Broadcast] Loaded.";
+        }
+
+        void Broadcast::unload( ) {
             stop();
+            qDebug() << "(ntwk) [Broadcast] Unloaded.";
         }
 
         void Broadcast::start() {
-            qDebug() << "(ntwk) [Broadcast] Starting broadcasting activity... ";
-            s_brdcst->sendSignal ();
+            if (!Broadcast::isActive ()){
+                s_brdcst->sendSignal ();
+                qDebug() << "(ntwk) [Broadcast] Started broadcasting activity.";
+            }
         }
 
         void Broadcast::stop() {
-            qDebug() << "(ntwk) [Broadcast] Stopping broadcasting activity... ";
+            if (Broadcast::isActive ()){
+                s_brdcst->deleteLater ();
+                qDebug() << "(ntwk) [Broadcast] Stopped broadcasting activity.";
+            }
         }
 
-        void Broadcast::sendSignal() const {
-            BroadcastMessage aMsg(BroadcastMessage::Online);
-            //qDebug() << "(ntwk) [Broadcast] Attempting to send message '" << aMsg.toString () << "'";
-            System::send(aMsg);
+        void Broadcast::sendSignal() {
+            qDebug() << "(ntwk) [Broadcast] Attempting to send broadcast...";
+            System::send(BroadcastMessage(BroadcastMessage::Online));
             QTimer::singleShot(200, s_brdcst, SLOT(sendSignal()));
         }
 
-        void Broadcast::readSignal(const Message& p_msg) const {
+        void Broadcast::readSignal(const Message& p_msg) {
             qDebug() << "(ntwk) [Broadcast] Attempting to read any messages..";
+
             if (p_msg.type() == "Broadcast") {
                 BroadcastMessage l_msg(p_msg);
+
                 switch (l_msg.broadcastType()) {
-                case BroadcastMessage::Ping:
-                    emit pingReply(l_msg.property ("Sender").toString ());
-                    break;
-                default:
-                    break;
+                    case BroadcastMessage::Ping:
+                        emit s_brdcst->pingReply(l_msg.property ("Sender").toString ());
+                        break;
                 }
             }
         }
 
+        void Broadcast::forceSignal () {
+            System::send ((BroadcastMessage(BroadcastMessage::Online)));
+        }
+
         const bool Broadcast::isActive () {
             return (s_brdcst != NULL);
+        }
+
+        Broadcast* Broadcast::instance () {
+            if (!s_brdcst) s_brdcst = new Broadcast;
+            return s_brdcst;
         }
 
         void Broadcast::ping(const QString& p_qualifier) {
@@ -88,17 +103,15 @@ namespace Wintermute {
 
         /// @todo Just convert the address into a qualifier and send it to the other version of the method.
         void Broadcast::ping(const QHostAddress& p_addr) {
-            Broadcast::ping("");
+            Broadcast::ping(System::toQualifier (p_addr));
         }
 
-        BroadcastMessage::BroadcastMessage( const Message& p_msg) : Message(p_msg) {
-
-        }
+        BroadcastMessage::BroadcastMessage( const Message& p_msg) : Message(p_msg) { }
 
         BroadcastMessage::BroadcastMessage ( const BroadcastType& brdtype ) : Message( ) {
             this->setProperty ( "Type" , "Broadcast" );
             this->setProperty ( "BroadcastType" , ( ( int ) brdtype ) );
-            this->setProperty ( "Recipient" , "Wintermute2");
+            this->setProperty ( "Recipient" , "broadcast");
         }
 
         const BroadcastMessage::BroadcastType BroadcastMessage::broadcastType( ) const {
