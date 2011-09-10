@@ -23,11 +23,11 @@
 #ifndef WNTRNTWK_HPP
 #define WNTRNTWK_HPP
 
-#include <wntr/ntwk/angel.hpp>
-#include <wntr/ntwk/message.hpp>
-#include <wntr/ntwk/broadcast.hpp>
-#include <wntr/ntwk/system.hpp>
-#include <wntr/ntwk/adaptors.hpp>
+#include "angel.hpp"
+#include "message.hpp"
+#include "broadcast.hpp"
+#include "system.hpp"
+#include "adaptors.hpp"
 
 namespace Wintermute {
     namespace Network {
