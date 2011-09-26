@@ -39,16 +39,18 @@ namespace Wintermute {
          *
          * This class mananges every aspect of Wintermute's ability to send
          * broadcast signals out onto the network. Typically, these messages
-         * are sent to the broadcasting address on UDP(255.255.255.255::1300+)
+         * are sent to the broadcasting address on TCP & UDP(255.255.255.255::1300+)
          * on local (::1:1300+).
          *
          * @see BroadcastMessage
          */
         class Broadcast : public QObject {
             Q_OBJECT
+            Q_DISABLE_COPY(Broadcast)
+
             private:
                 static Broadcast* s_brdcst;
-
+                Broadcast();
 
             signals:
                 /**
@@ -59,6 +61,38 @@ namespace Wintermute {
                 void pingReply(const QString& ) const;
 
             public:
+                ~Broadcast();
+                /**
+                 * @brief Determines if it's accepting.
+                 *
+                 * Checks if the broadcasting system has been initialized and if it's been started.
+                 * @see start()
+                 * @see stop()
+                 */
+                static const bool isActive( );
+
+                /**
+                 * @brief Sends a ping to a specified host by its qualifier.
+                 * @fn ping
+                 * @param p_qualifier The qualifier of the host to send the ping to.
+                 */
+                static void ping(const QString& );
+
+                /**
+                 * @brief Sends a ping to a specified host by its address.
+                 * @fn ping
+                 * @param p_addr The direct addres of the host to send the ping to.
+                 */
+                static void ping(const QHostAddress& );
+
+                /**
+                 * @brief
+                 *
+                 * @fn instance
+                 */
+                static Broadcast* instance();
+
+            public slots:
                 /**
                  * @brief Initializes the broadcast system.
                  *
@@ -68,7 +102,7 @@ namespace Wintermute {
                  * @note If you want to <i>start</i> the broadcasting system, use start() instead.
                  * @see start()
                  */
-                static void initialize( );
+                static void unload( );
 
                 /**
                  * @brief Deinitializes the broadcast system.
@@ -79,8 +113,7 @@ namespace Wintermute {
                  * @note If you want to <i>stop</i> the broadcasting system, use stop() instead.
                  * @see stop()
                  */
-                static void deinitialize( );
-
+                static void load( );
                 /**
                   * @brief Starts the system.
                   *
@@ -119,32 +152,10 @@ namespace Wintermute {
                   */
                 static void forceSignal();
 
-                /**
-                 * @brief Determines if it's accepting.
-                 *
-                 * Checks if the broadcasting system has been initialized and if it's been started.
-                 * @see start()
-                 * @see stop()
-                 */
-                static const bool isActive( );
-
-                /**
-                 * @brief Sends a ping to a specified host by its qualifier.
-                 * @fn ping
-                 * @param p_qualifier The qualifier of the host to send the ping to.
-                 */
-                static void ping(const QString& );
-
-                /**
-                 * @brief Sends a ping to a specified host by its address.
-                 * @fn ping
-                 * @param p_addr The direct addres of the host to send the ping to.
-                 */
-                static void ping(const QHostAddress& );
 
             private slots:
-                void sendSignal() const;
-                void readSignal(const Message&) const;
+                static void sendSignal();
+                static void readSignal(const Message&);
         };
 
         /**

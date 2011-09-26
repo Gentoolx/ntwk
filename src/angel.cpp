@@ -15,9 +15,9 @@
  * Boston, MA 02111-1307, USA.
 
  * @file angel.cpp
- * @author Jacky Alcine
+ * @author Wintermute Developers <wintermute-devel@lists.launchpad.net>
  * @date April 3, 2011, 3:53 PM
  */
 
 #include "angel.hpp"
-// kate: indent-mode cstyle; space-indent on; indent-width 4;
+// kate: indent-mode cstyle; space-indent on; indent-width 4; 

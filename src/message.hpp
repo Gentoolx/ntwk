@@ -15,7 +15,7 @@
  * Boston, MA 02111-1307, USA.
 
  * @file message.hpp
- * @author Jacky Alcine
+ * @author Wintermute Developers <wintermute-devel@lists.launchpad.net>
  * @date April 3, 2011, 10:09 AM
  */
 
@@ -60,6 +60,7 @@ namespace Wintermute {
          *            at least signing of messages. QCA provides MD5, SHA-1, and OpenGPG.
          *            We're good.
          * @todo Add operating overloading for searching through messages (operator[](const QString)).
+         * @todo Add stream operating support.
          */
         class Message : public QObject {
             Q_OBJECT

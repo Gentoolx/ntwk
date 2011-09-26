@@ -15,7 +15,7 @@
  * Boston, MA 02111-1307, USA.
 
  * @file message.cpp
- * @author Jacky Alcine
+ * @author Wintermute Developers <wintermute-devel@lists.launchpad.net>
  * @date April 3, 2011, 10:10 AM
  */
 
@@ -43,7 +43,7 @@ namespace Wintermute {
         Message::Message ( const Message &msg ) {
             QList<QByteArray> l_propNames = msg.dynamicPropertyNames ();
             foreach (const QString l_propName, l_propNames)
-                this->setProperty (l_propName.toStdString ().c_str (),msg.property (l_propName.toStdString ().c_str ()));
+            this->setProperty (l_propName.toStdString ().c_str (),msg.property (l_propName.toStdString ().c_str ()));
 
             __init();
         }
@@ -74,12 +74,12 @@ namespace Wintermute {
             else return "";
         }
 
-        /// @todo Find a means of converting this object's properties to a QString. (Using QJson)
+        /// @todo Implement the means of converting this object's properties to a QString. (Using QJson)
         const QString Message::toString () const {
             return "COOHIE!";
         }
 
-        /// @todo Find a means of converting a QString into a Message.
+        /// @todo Implement the means of converting a QString into a Message.
         Message* Message::fromString ( const QString& serializedText ) {
             return NULL;
         }
