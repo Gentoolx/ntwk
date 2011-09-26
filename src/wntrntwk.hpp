@@ -1,5 +1,5 @@
 /*
- *  Author: Jacky Alcine <jacky.alcine@thesii.org>
+ *  Author: Wintermute Developers <wintermute-devel@lists.launchpad.net>
  *
  *  Copyright 2011 (c) Wintermute Developers
  *
@@ -27,29 +27,30 @@
 #include "message.hpp"
 #include "broadcast.hpp"
 #include "system.hpp"
+#include "adaptors.hpp"
 
 namespace Wintermute {
     namespace Network {
-        /**
-         * @brief Initialize network system.
-         * Starts up the main work of the network system, and creates what needs to be initialized.
-         * @see Wintermute::Network::Broadcast::Initialize
-         */
-        static void Initialize ( ) {
-            System::start();
-            Broadcast::initialize ( );
-        }
+        struct Interface;
 
-        /**
-         * @brief
-         *
-         * @fn Deinitialize
-         * @param void
-         */
-        static void Deinitialize ( void ) {
-            Broadcast::deinitialize ();
-            System::stop();
-        }
+        class Interface : public QObject {
+            Q_OBJECT
+            Q_DISABLE_COPY(Interface)
+            static Interface* s_ints;
+
+            public:
+                Interface();
+                static const bool isActive();
+                static Interface* instance();
+
+            public slots:
+                Q_NOREPLY void start() const;
+                Q_NOREPLY void stop() const;
+
+            signals:
+                void started() const;
+                void stopped() const;
+        };
     }
 }
 
